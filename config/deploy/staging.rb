@@ -1,7 +1,7 @@
 set :stage, :staging
 set :branch, 'development'
 
-set :server_name, 'bi-tool.stg'
+set :server_name, 'application.stg'
 
 set :full_app_name, "#{fetch(:application)}_#{fetch(:stage)}"
 
