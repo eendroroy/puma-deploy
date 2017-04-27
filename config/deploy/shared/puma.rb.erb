@@ -1,0 +1,41 @@
+#!/usr/bin/env puma
+
+directory '<%= current_path %>'
+environment '<%= fetch(:rails_env) %>'
+
+pidfile '<%= fetch(:puma_pid) %>'
+state_path '<%= fetch(:puma_state) %>'
+stdout_redirect '<%= fetch(:puma_access_log) %>', '<%= fetch(:puma_error_log) %>', true
+
+daemonize
+
+threads <%= fetch(:puma_threads).join(', ') %>
+
+bind '<%= fetch(:puma_bind) %>'
+
+activate_control_app '<%= fetch(:puma_default_control_app) %>'
+
+workers '<%= fetch(:puma_workers) %>'
+
+<% if fetch(:puma_preload_app) %>
+preload_app!
+<% end %>
+
+<% fetch(:puma_plugins).each do |plug| %>
+plugin <%= ':' + plug.to_s %>
+<% end %>
+
+on_restart do
+  puts 'Refreshing Gemfile'
+  ENV['BUNDLE_GEMFILE'] = '<%= fetch(:bundle_gemfile, "#{current_path}/Gemfile") %>'
+end
+
+before_fork do
+  ActiveRecord::Base.connection_pool.disconnect!
+end
+
+on_worker_boot do
+  ActiveSupport.on_load(:active_record) do
+    ActiveRecord::Base.establish_connection
+  end
+end

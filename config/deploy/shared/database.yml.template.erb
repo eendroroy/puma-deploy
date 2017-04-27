@@ -1,0 +1,10 @@
+<%= fetch(:rails_env) %>:
+  adapter: mysql2
+  encoding: utf8
+  pool: 5
+  timeout: 5000
+  port: 3306
+  host: localhost
+  username:
+  password:
+  database: <%= "#{fetch(:application)}_#{fetch(:rails_env)}" %>
