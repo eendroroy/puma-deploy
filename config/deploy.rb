@@ -22,7 +22,7 @@ set :linked_files, %w(config/application.yml config/database.yml config/secrets.
 
 set(
   :linked_dirs,
-  %w(bin log tmp/pids tmp/states tmp/sockets tmp/cache vendor/bundle public/system)
+  %w(log tmp/pids tmp/states tmp/sockets tmp/cache vendor/bundle public/system)
 )
 
 # which config files should be copied by deploy:setup_config
