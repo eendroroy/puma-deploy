@@ -111,7 +111,7 @@ and contributors are expected to adhere to the [Contributor Covenant](http://con
 
 * **Indrajit Roy** - *Initial work* - [eendroroy](https://github.com/eendroroy)
 
-See also the list of [contributors](https://github.com/eendroroy/puma-deploy/CONTRIBUTORS.md) who participated in this project.
+See also the list of [contributors](CONTRIBUTORS.md) who participated in this project.
 
 ## License
 
