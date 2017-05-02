@@ -2,9 +2,12 @@ set :stage, :production
 set :branch, 'master'
 
 set :server_name, 'application.prod'
+set :server_port, 80
+set :server_port_ssl, 443
 
 set :full_app_name, "#{fetch(:application)}_#{fetch(:stage)}"
 
+# Don't forget to put your server ip
 server '__ip__', user: fetch(:deploy_user).to_s, roles: %w(web app db), primary: true
 
 set :deploy_to, "/home/#{fetch(:deploy_user)}/apps/#{fetch(:full_app_name)}"

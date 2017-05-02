@@ -1,10 +1,10 @@
-upstream puma {
+upstream puma_<%= fetch(:stage) %> {
   server <%= fetch(:puma_bind) %> fail_timeout=0;
 }
 
 server {
   server_name <%= fetch(:server_name) %>;
-  listen 80;
+  listen <%= fetch(:server_port) %>;
   root <%= fetch(:deploy_to) %>/current/public;
 
   location ^~ /assets/ {
@@ -13,12 +13,12 @@ server {
     add_header Cache-Control public;
   }
 
-  try_files $uri/index.html $uri @puma;
-  location @puma {
+  try_files $uri/index.html $uri @puma_<%= fetch(:stage) %>;
+  location @puma_<%= fetch(:stage) %> {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $http_host;
     proxy_redirect off;
-    proxy_pass http://puma;
+    proxy_pass http://puma_<%= fetch(:stage) %>;
   }
 
   error_page 500 502 503 504 /500.html;
@@ -29,7 +29,7 @@ server {
 <% if fetch(:nginx_use_ssl) %>
 server {
   server_name <%= fetch(:server_name) %>;
-  listen 443;
+  listen <%= fetch(:server_port_ssl) %>;
   root <%= fetch(:deploy_to) %>/current/public;
 
   location ^~ /assets/ {
@@ -38,13 +38,13 @@ server {
     add_header Cache-Control public;
   }
 
-  try_files $uri/index.html $uri @puma;
-  location @puma {
+  try_files $uri/index.html $uri @puma_<%= fetch(:stage) %>;
+  location @puma_<%= fetch(:stage) %> {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header   X-Forwarded-Proto https;
     proxy_set_header Host $http_host;
     proxy_redirect off;
-    proxy_pass http://puma;
+    proxy_pass http://puma_<%= fetch(:stage) %>;
   }
 
   error_page 500 502 503 504 /500.html;

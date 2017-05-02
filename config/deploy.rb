@@ -6,7 +6,7 @@
 lock '3.8.0'
 
 set :application, 'application'
-set :repo_url, 'git@github.com:user/repo.git'
+set :repo_url, '#' # Put Git url (Ex: git@github.com:user/repo.git)
 set :deploy_user, 'deployer'
 set :pty, true
  
