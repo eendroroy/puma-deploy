@@ -33,31 +33,31 @@ end
 
 ```
 ├── config
-│    ├── deploy
-│    │    ├── shared
-│    │    │    ├── application.yml.template.erb
-│    │    │    ├── database.yml.template.erb
-│    │    │    ├── log_rotation.erb
-│    │    │    ├── nginx.conf.erb
-│    │    │    ├── puma.rb.erb
-│    │    │    ├── puma_init.sh.erb
-│    │    │    └── secrets.yml.template.erb
-│    │    ├── production.rb
-│    │    └── staging.rb
-│    └── deploy.rb
+│   ├── deploy
+│   │   ├── shared
+│   │   │   ├── application.yml.template.erb
+│   │   │   ├── database.yml.template.erb
+│   │   │   ├── log_rotation.erb
+│   │   │   ├── nginx.conf.erb
+│   │   │   ├── puma.rb.erb
+│   │   │   ├── puma_init.sh.erb
+│   │   │   └── secrets.yml.template.erb
+│   │   ├── production.rb
+│   │   └── staging.rb
+│   └── deploy.rb
 ├── lib
-│    └── capistrano
-│        ├── tasks
-│        │   ├── check_revision.cap
-│        │   ├── compile_assets_locally.cap
-│        │   ├── logs.cap
-│        │   ├── monit.cap
-│        │   ├── nginx.cap
-│        │   ├── restart.cap
-│        │   ├── run_tests.cap
-│        │   └── setup_config.cap
-│        ├── substitute_strings.rb
-│        └──template.rb
+│   └── capistrano
+│       ├── tasks
+│       │   ├── check_revision.cap
+│       │   ├── compile_assets_locally.cap
+│       │   ├── logs.cap
+│       │   ├── monit.cap
+│       │   ├── nginx.cap
+│       │   ├── restart.cap
+│       │   ├── run_tests.cap
+│       │   └── setup_config.cap
+│       ├── substitute_strings.rb
+│       └── template.rb
 └── Capfile 
 ```
 - Put rails project's git url under :repo_url
