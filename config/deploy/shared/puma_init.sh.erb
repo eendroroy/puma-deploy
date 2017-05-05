@@ -1,13 +1,10 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 PATH=/usr/local/bin:/usr/local/sbin/:/sbin:/usr/sbin:/bin:/usr/bin
 DESC="Puma rack web server"
 NAME=puma_<%=fetch(:full_app_name)%>
-DAEMON=${NAME}
 SCRIPT_NAME=/etc/init.d/${NAME}
 APP_ROOT=<%=current_path%>
-SHARED_PATH=<%=shared_path%>
-USER=<%=fetch(:deploy_user)%>
 PIDFILE=<%= fetch(:puma_pid) %>
 STATE_FILE=<%= fetch(:puma_state) %>
 
@@ -16,17 +13,7 @@ log_end_msg() { [ $1 -eq 0 ] && RES=OK; logger ${RES:=FAIL}; }
 
 run_pumactl(){
   [ $# -lt 1 ] && echo "$# params were given, Expected 1" && exit 1
-  if [ -d "$HOME/.rbenv/bin" ]; then
-    PATH="$HOME/.rbenv/bin:$HOME/.rbenv/shims:$PATH"
-    eval "$(rbenv init -)"
-  elif [ -d "/usr/local/rbenv/bin" ]; then
-    PATH="/usr/local/rbenv/bin:/usr/local/rbenv/shims:$PATH"
-    eval "$(rbenv init -)"
-  else
-    echo "---> No ruby found in the system :( ..."
-    exit 1
-  fi
-  cd ${APP_ROOT} && bundle exec pumactl -F <%=fetch(:puma_conf)%> $1
+  cd ${APP_ROOT} && <%= fetch(:rbenv_prefix) %> bundle exec pumactl -F <%=fetch(:puma_conf)%> $1
 }
 
 #
@@ -54,30 +41,30 @@ do_start_task() {
 # Function that stops the daemon/service
 #
 stop_task() {
-  log_daemon_msg "--> Stopping ${APP_ROOT}"
-  echo ${PIDFILE}
+  log_daemon_msg "--> Stopping puma in path: ${APP_ROOT} ..."
   if [ -e ${PIDFILE} ]; then
     PID=`cat ${PIDFILE}`
-    echo "Pid: ${PID}"
     if [ "`ps -A -o pid= | grep -c ${PID}`" -eq 0 ]; then
-      log_daemon_msg "---> Puma ${APP_ROOT} isn't running."
+      log_daemon_msg "--> Puma isn't running in path: ${APP_ROOT}."
     else
-      log_daemon_msg "---> About to kill PID `cat $PIDFILE`"
+      log_daemon_msg "--> About to kill puma with PID: `cat $PIDFILE` ..."
       if [ "`ps -A -o pid= | grep -c ${PID}`" -eq 0 ]; then
-        echo "Puma isn't running"
+        log_daemon_msg "--> Puma isn't running in path: ${APP_ROOT}."
         return 0
       else
         run_pumactl stop
+        log_daemon_msg "--> Waiting for status ..."
+        sleep 5
         if [ "`ps -A -o pid= | grep -c ${PID}`" -eq 0 ]; then
-          log_daemon_msg "Puma with pid ${PID} stopped"
+          log_daemon_msg "--> Puma with pid ${PID} stopped successfully."
           rm -f ${PIDFILE} ${STATE_FILE}
         else
-          log_daemon_msg "---> Unable to stop puma with pid ${PID}"
+          log_daemon_msg "--> Unable to stop puma with pid ${PID}."
         fi
       fi
     fi
   else
-    log_daemon_msg "---> No puma here..."
+    log_daemon_msg "--> Puma isn't running in path: ${APP_ROOT}."
   fi
   return 0
 }
@@ -87,10 +74,10 @@ stop_task() {
 #
 restart_task() {
   if [ -e ${PIDFILE} ]; then
-    log_daemon_msg "--> About to restart puma ${APP_ROOT}"
+    log_daemon_msg "--> About to restart puma in path: ${APP_ROOT} ..."
     run_pumactl restart
   else
-    log_daemon_msg "--> Your puma was never playing... Let's get it out there first"
+    log_daemon_msg "--> Your puma was never playing... Let's get it out there first ..."
     start_task
   fi
   return 0
@@ -101,17 +88,17 @@ restart_task() {
 #
 status_task() {
   if [ -e ${PIDFILE} ]; then
-    log_daemon_msg "--> About to status puma ${APP_ROOT}"
+    log_daemon_msg "--> About to status puma ${APP_ROOT} ..."
     run_pumactl status
   else
-    log_daemon_msg "--> ${APP_ROOT} isn't there :(..."
+    log_daemon_msg "---> Puma isn't running in path: ${APP_ROOT}."
   fi
   return 0
 }
 
 case "$1" in
   start)
-    [ "$VERBOSE" != no ] && log_daemon_msg "Starting ${DESC}" "${NAME}"
+    [ "$VERBOSE" != no ] && log_daemon_msg "Starting ${DESC}" "${NAME} ..."
     start_task
     case "$?" in
       0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
@@ -119,7 +106,7 @@ case "$1" in
     esac
     ;;
   stop)
-    [ "$VERBOSE" != no ] && log_daemon_msg "Stopping ${DESC}" "${NAME}"
+    [ "$VERBOSE" != no ] && log_daemon_msg "Stopping ${DESC}" "${NAME} ..."
     stop_task
     case "$?" in
       0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
@@ -127,7 +114,7 @@ case "$1" in
     esac
     ;;
   status)
-    log_daemon_msg "Status ${DESC}" "${NAME}"
+    log_daemon_msg "Status ${DESC}" "${NAME} ..."
     status_task
     case "$?" in
       0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
@@ -135,7 +122,7 @@ case "$1" in
     esac
     ;;
   restart)
-    log_daemon_msg "Restarting ${DESC}" "${NAME}"
+    log_daemon_msg "Restarting ${DESC}" "${NAME} ..."
     restart_task
     case "$?" in
       0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
@@ -144,7 +131,7 @@ case "$1" in
     ;;
   *)
     echo "Usage:" >&2
-    echo " ${SCRIPT_NAME} {start|stop|status|restart}" >&2
+    echo "  ${SCRIPT_NAME} {start|stop|status|restart}" >&2
     exit 3
     ;;
 esac
