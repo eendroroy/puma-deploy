@@ -50,7 +50,7 @@ set(
   [
     {
       source: 'nginx.conf',
-      link: '/etc/nginx/sites-available/{{full_app_name}}.conf'
+      link: '/etc/nginx/sites-enabled/{{full_app_name}}.conf'
     },
     {
       source: 'puma_init.sh',
