@@ -109,7 +109,7 @@ and contributors are expected to adhere to the [Contributor Covenant](http://con
 
 ## Authors
 
-* **Indrajit Roy** - *Initial work* - [eendroroy](https://github.com/eendroroy)
+* **Indrajit Roy** - *Fix nginx configs* - [eendroroy](https://github.com/eendroroy)
 
 See also the list of [contributors](CONTRIBUTORS.md) who participated in this project.
 
