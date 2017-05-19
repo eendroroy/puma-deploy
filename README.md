@@ -1,4 +1,5 @@
 # Puma Deploy
+[![Contributors](https://img.shields.io/github/contributors/eendroroy/puma-deploy.svg)](CONTRIBUTORS.md)
 
 Rails-5 application deploy configuration using puma and nginx.
 
