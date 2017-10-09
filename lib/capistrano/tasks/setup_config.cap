@@ -2,6 +2,7 @@ namespace :deploy do
   task :setup_config do
     on roles(:app) do
       execute :mkdir, "-p #{shared_path}/config"
+      execute :mkdir, "-p #{shared_path}/certificates"
 
       config_files = fetch(:config_files)
       config_files.each do |file|
