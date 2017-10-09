@@ -80,20 +80,20 @@ end
   set :application, 'demo_application'
   ```
   
-- Set server name in production.rb and staging.rb under :server_name
+- Set server name in 'config/deploy/production.rb' and 'config/deploy/staging.rb' under :server_name
   
   Example:
   
   ```
-  # production.rb
+  # config/deploy/production.rb
   set :server_name, 'example.prod'
   ```
   ```
-  # staging.rb
+  # config/deploy/staging.rb
   set :server_name, 'example.stage'
   ```
   
-- Set Ip Address in production.rb and staging.rb under server
+- Set Ip Address in 'config/deploy/production.rb' and 'config/deploy/staging.rb' under server
   
   Example:
   ```
