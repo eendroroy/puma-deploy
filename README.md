@@ -64,11 +64,20 @@ end
 │       └── template.rb
 └── Capfile 
 ```
-- Put rails project's git url under :repo_url
+- Put rails project's git url under :repo_url in 'config/deploy.rb' file.
 
   Example:
   ```
+  #config/deploy.rb
   set :repo_url, 'git@github.com:user/repo.git'
+  
+  ```
+- Change application name under :application in 'config/deploy.rb' file.
+  
+  Example:
+  ```
+  #config/deploy.rb
+  set :application, 'demo_application'
   ```
   
 - Set server name in production.rb and staging.rb under :server_name
