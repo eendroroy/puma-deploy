@@ -1,0 +1,8 @@
+namespace :deploy do
+  desc "Runs seed on server"
+  task :run_seed do
+    on roles(:app) do
+      execute "cd #{current_path} && RAILS_ENV=#{fetch(:rails_env)} #{fetch(:rbenv_prefix)} bundle exec rails db:seed"
+    end
+  end
+end
