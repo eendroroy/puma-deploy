@@ -5,5 +5,6 @@ group :development do
   gem 'capistrano-rails', '~> 1.3'
   gem 'capistrano-rails-console', '~> 2.2'
   gem 'capistrano-rbenv', '~> 2.1', '>= 2.1.1'
+  gem 'sshkit-interactive'
 end
 

@@ -1,8 +1,9 @@
 namespace :remote do
   desc "Open rails console on server"
   task :console do
-    on roles(:app) do
-      execute "cd #{current_path} && RAILS_ENV=#{fetch(:rails_env)} #{fetch(:rbenv_prefix)} bundle exec rails console"
+    run_interactively primary(:app) do
+      cmd = "cd #{current_path} && #{fetch(:rbenv_prefix)} bundle exec rails console #{fetch(:rails_env)}"
+      execute cmd
     end
   end
 end
