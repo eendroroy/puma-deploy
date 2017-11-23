@@ -31,6 +31,7 @@ set :puma_worker_timeout, nil
 set :puma_init_active_record, false
 set :puma_preload_app, true
 set :puma_plugins, [:tmp_restart]
+set :nginx_disable_http, false
 set :nginx_use_ssl, false
 set :nginx_certificate_path, "#{shared_path}/certificates/staging.crt"
 set :nginx_key_path, "#{shared_path}/certificates/staging.key"
