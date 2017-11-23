@@ -51,7 +51,7 @@ server {
   client_max_body_size 4G;
   keepalive_timeout 10;
   ssl on;
-  ssl_certificate <%= fetch(:deploy_to) %>/shared/certificates/ssl_cert.crt;
-  ssl_certificate_key <%= fetch(:deploy_to) %>/shared/certificates/ssl_private_key.key;
+  ssl_certificate <%= fetch(:nginx_certificate_path) %>;
+  ssl_certificate_key <%= fetch(:nginx_key_path) %>;
 }#
 <% end %>
