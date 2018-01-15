@@ -1,6 +1,11 @@
 # Puma Deploy
-[![Contributors](https://img.shields.io/github/contributors/eendroroy/puma-deploy.svg)](CONTRIBUTORS.md)
-
+[![Contributors](https://img.shields.io/github/contributors/eendroroy/puma-deploy.svg)](https://github.com/eendroroy/puma-deploy/graphs/contributors)
+[![GitHub last commit (branch)](https://img.shields.io/github/last-commit/eendroroy/puma-deploy/master.svg)](https://github.com/eendroroy/puma-deploy)
+[![license](https://img.shields.io/github/license/eendroroy/puma-deploy.svg)](https://github.com/eendroroy/puma-deploy/blob/master/LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues/eendroroy/puma-deploy.svg)](https://github.com/eendroroy/puma-deploy/issues)
+[![GitHub closed issues](https://img.shields.io/github/issues-closed/eendroroy/puma-deploy.svg)](https://github.com/eendroroy/puma-deploy/issues?q=is%3Aissue+is%3Aclosed)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/eendroroy/puma-deploy.svg)](https://github.com/eendroroy/puma-deploy/pulls)
+[![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/eendroroy/puma-deploy.svg)](https://github.com/eendroroy/puma-deploy/pulls?q=is%3Apr+is%3Aclosed)
 Rails-5 application deploy configuration using puma and nginx.
 
 ## Description
@@ -21,13 +26,13 @@ Require following gems to be included in Gemfile.
 - capistrano-rbenv
 
 ```
-gem 'puma', '~> 3.9', '>= 3.9.1'
+gem 'puma', '~> 3.10'
 group :development do
-  gem 'capistrano', '~> 3.9'
-  gem 'capistrano-bundler', '~> 1.2'
-  gem 'capistrano-rails', '~> 1.3'
-  gem 'capistrano-rails-console', '~> 2.2'
-  gem 'capistrano-rbenv', '~> 2.1', '>= 2.1.1'
+  gem 'capistrano'
+  gem 'capistrano-bundler'
+  gem 'capistrano-rails'
+  gem 'capistrano-rails-console'
+  gem 'capistrano-rbenv'
 end
 ```
 
@@ -132,3 +137,4 @@ See also the list of [contributors](CONTRIBUTORS.md) who participated in this pr
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
