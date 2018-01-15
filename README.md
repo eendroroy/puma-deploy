@@ -6,6 +6,7 @@
 [![GitHub closed issues](https://img.shields.io/github/issues-closed/eendroroy/puma-deploy.svg)](https://github.com/eendroroy/puma-deploy/issues?q=is%3Aissue+is%3Aclosed)
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/eendroroy/puma-deploy.svg)](https://github.com/eendroroy/puma-deploy/pulls)
 [![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/eendroroy/puma-deploy.svg)](https://github.com/eendroroy/puma-deploy/pulls?q=is%3Apr+is%3Aclosed)
+
 Rails-5 application deploy configuration using puma and nginx.
 
 ## Description
