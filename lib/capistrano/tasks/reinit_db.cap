@@ -1,10 +1,8 @@
 namespace :deploy do
   desc "Re-initialize databasse on server"
   task :reinit_db do
-    on roles(:app) do
-      execute "cd #{current_path} && RAILS_ENV=#{fetch(:rails_env)} #{fetch(:rbenv_prefix)} bundle exec rails db:migrate VERSION=0"
-      execute "cd #{current_path} && RAILS_ENV=#{fetch(:rails_env)} #{fetch(:rbenv_prefix)} bundle exec rails db:migrate"
-      execute "cd #{current_path} && RAILS_ENV=#{fetch(:rails_env)} #{fetch(:rbenv_prefix)} bundle exec rails db:seed"
+    on roles(:db) do
+      execute "cd #{current_path} && RAILS_ENV=#{fetch(:rails_env)} #{fetch(:rbenv_prefix)} bundle exec rake db:reset
     end
   end
 end
