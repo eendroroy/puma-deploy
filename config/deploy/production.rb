@@ -2,15 +2,18 @@ set :stage, :production
 set :branch, :master
 
 set :server_name, 'application.prod'
+set :server_name_http, 'http.application.prod'
 set :server_port, 80
 set :server_port_ssl, 443
 
 set :full_app_name, "#{fetch(:application)}_#{fetch(:stage)}"
 
 # Don't forget to put your server ip
-server '0.0.0.0', user: fetch(:deploy_user).to_s, roles: %w(web app db), primary: true
+server '192.168.33.11', user: fetch(:deploy_user).to_s, roles: %w[web app db], primary: true
+server '192.168.33.12', user: fetch(:deploy_user).to_s, roles: %w[web app], primary: true
+server '192.168.33.13', user: fetch(:deploy_user).to_s, roles: %w[web app], primary: true
 
-set :deploy_to, "/home/#{fetch(:deploy_user)}/apps/#{fetch(:full_app_name)}"
+set :deploy_to, "#{fetch(:deploy_path)}/#{fetch(:full_app_name)}"
 
 set :rails_env, :production
 
@@ -26,7 +29,7 @@ set :puma_error_log, "#{shared_path}/log/puma_error.log"
 set :puma_role, :app
 set :puma_env, :production
 set :puma_threads, [1, 4]
-set :puma_workers, 4
+set :puma_workers, 8
 set :puma_worker_timeout, nil
 set :puma_init_active_record, false
 set :puma_preload_app, true
@@ -37,4 +40,3 @@ set :nginx_use_ssl, false
 set :nginx_https_limit_url, []
 set :nginx_certificate_path, "#{shared_path}/certificates/production.crt"
 set :nginx_key_path, "#{shared_path}/certificates/production.key"
-

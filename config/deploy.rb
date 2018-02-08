@@ -3,15 +3,18 @@
 # bundle exec cap staging deploy
 #
 
-lock '3.9.1'
+lock '3.10.1'
 
 set :application, 'application'
 set :repo_url, '#' # Put Git url (Ex: git@github.com:user/repo.git)
-set :deploy_user, 'deployer'
+set :deploy_user, :deployer
+set :deploy_path, "/home/#{fetch(:deploy_user)}/apps"
+# set :deploy_path, '/apps'
 set :pty, true
+set :tmp_dir, "/tmp"
  
 set :rbenv_type, :system
-set :rbenv_ruby, '2.4.2'
+set :rbenv_ruby, '2.5.0'
 set :rbenv_prefix,
     "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec"
 set :rbenv_map_bins, %w(rake gem bundle ruby rails)
@@ -27,9 +30,6 @@ set(
   %w(log tmp/pids tmp/states tmp/sockets tmp/cache vendor/bundle public/system)
 )
 
-# which config files should be copied by deploy:setup_config
-# see documentation in lib/capistrano/tasks/setup_config.cap
-# for details of operations
 set(
   :config_files,
   %w(
@@ -65,8 +65,8 @@ set(
 
 namespace :deploy do
   before :deploy, 'deploy:check_revision'
-  # before :deploy, "deploy:run_tests"
-  # after 'deploy:symlink:shared', 'deploy:compile_assets_locally'
+  before :deploy, "deploy:run_tests"
+  after 'deploy:symlink:shared', 'deploy:compile_assets_locally'
   after :finishing, 'deploy:cleanup'
   before 'deploy:setup_config', 'nginx:remove_default_vhost'
   after 'deploy:setup_config', 'nginx:reload'
