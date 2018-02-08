@@ -5,4 +5,11 @@ namespace :db do
       execute "cd #{current_path} && RAILS_ENV=#{fetch(:rails_env)} #{fetch(:rbenv_prefix)} bundle exec rails db:seed"
     end
   end
+
+  desc "Resets databasse on server"
+  task :reset do
+    on roles(:db) do
+      execute "cd #{current_path} && RAILS_ENV=#{fetch(:rails_env)} #{fetch(:rbenv_prefix)} bundle exec rake db:reset
+    end
+  end
 end

@@ -1,8 +1,0 @@
-namespace :db do
-  desc "Re-initialize databasse on server"
-  task :reset_db do
-    on roles(:db) do
-      execute "cd #{current_path} && RAILS_ENV=#{fetch(:rails_env)} #{fetch(:rbenv_prefix)} bundle exec rake db:reset
-    end
-  end
-end

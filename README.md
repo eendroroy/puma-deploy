@@ -58,12 +58,11 @@ end
       ├── tasks
       │  ├── check_revision.cap
       │  ├── compile_assets_locally.cap
+      │  ├── database.cap
       │  ├── logs.cap
       │  ├── monit.cap
       │  ├── nginx.cap
-      │  ├── reinit_db.cap
       │  ├── remote.cap
-      │  ├── run_seed.cap
       │  ├── run_tests.cap
       │  └── setup_config.cap
       └── template.rb
