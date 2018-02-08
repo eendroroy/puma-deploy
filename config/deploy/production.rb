@@ -38,5 +38,5 @@ set :nginx_disable_http, false
 set :nginx_http_limit_url, []
 set :nginx_use_ssl, false
 set :nginx_https_limit_url, []
-set :nginx_certificate_path, "#{shared_path}/certificates/production.crt"
-set :nginx_key_path, "#{shared_path}/certificates/production.key"
+set :nginx_certificate_path, "#{shared_path}/certificates/#{fetch(:stage)}.crt"
+set :nginx_key_path, "#{shared_path}/certificates/#{fetch(:stage)}.key"
