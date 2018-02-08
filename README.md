@@ -18,13 +18,7 @@ Rails-5 application deploy configuration using puma and nginx.
 
 ### Prerequisites
 
-Require following gems to be included in Gemfile.
-
-- puma
-- capistrano
-- capistrano-bundler
-- capistrano-rails
-- capistrano-rbenv
+Requires following gems.
 
 ```
 gem 'puma', '~> 3.10'
@@ -42,35 +36,37 @@ end
 - Copy following files in your application root maintaining the structure:
 
 ```
+.
+├── Capfile
 ├── config
-│   ├── deploy
-│   │   ├── shared
-│   │   │   ├── application.yml.template.erb
-│   │   │   ├── database.yml.template.erb
-│   │   │   ├── log_rotation.erb
-│   │   │   ├── nginx.conf.erb
-│   │   │   ├── puma_init.sh.erb
-│   │   │   ├── puma.rb.erb
-│   │   │   └── secrets.yml.template.erb
-│   │   ├── production.rb
-│   │   └── staging.rb
-│   └── deploy.rb
-├── lib
-│   └── capistrano
-│       ├── tasks
-│       │   ├── check_revision.cap
-│       │   ├── compile_assets_locally.cap
-│       │   ├── logs.cap
-│       │   ├── monit.cap
-│       │   ├── nginx.cap
-│       │   ├── reinit_db.cap
-│       │   ├── remote.cap
-│       │   ├── run_seed.cap
-│       │   ├── run_tests.cap
-│       │   └── setup_config.cap
-│       ├── substitute_strings.rb
-│       └── template.rb
-└── Capfile
+│  ├── deploy
+│  │  ├── shared
+│  │  │  ├── application.yml.template.erb
+│  │  │  ├── database.yml.template.erb
+│  │  │  ├── log_rotation.erb
+│  │  │  ├── nginx.conf.erb
+│  │  │  ├── puma.rb.erb
+│  │  │  ├── puma_init.sh.erb
+│  │  │  ├── secrets.yml.template.erb
+│  │  │  └── sunspot.yml.template.erb
+│  │  ├── production.rb
+│  │  └── staging.rb
+│  └── deploy.rb
+└── lib
+   └── capistrano
+      ├── substitute_strings.rb
+      ├── tasks
+      │  ├── check_revision.cap
+      │  ├── compile_assets_locally.cap
+      │  ├── logs.cap
+      │  ├── monit.cap
+      │  ├── nginx.cap
+      │  ├── reinit_db.cap
+      │  ├── remote.cap
+      │  ├── run_seed.cap
+      │  ├── run_tests.cap
+      │  └── setup_config.cap
+      └── template.rb
 ```
 
 - Put rails project's git url under :repo_url in 'config/deploy.rb' file.
