@@ -1,0 +1,22 @@
+namespace :db do
+  desc "Runs seed on server"
+  task :seed do
+    on roles(:db) do
+      execute "cd #{current_path} && RAILS_ENV=#{fetch(:rails_env)} #{fetch(:rbenv_prefix)} bundle exec rails db:seed"
+    end
+  end
+
+  desc "Re-initialize database on server"
+  task :reset do
+    on roles(:db) do
+      execute "cd #{current_path} && RAILS_ENV=#{fetch(:rails_env)} #{fetch(:rbenv_prefix)} bundle exec rake db:reset"
+    end
+  end
+
+  desc "Reindex all models in SOLR"
+  task :reindex do
+    on roles(:db) do
+      execute "cd #{current_path} && RAILS_ENV=#{fetch(:rails_env)} #{fetch(:rbenv_prefix)} bundle exec rake sunspot:reindex"
+    end
+  end
+end
