@@ -1,19 +1,23 @@
 set :stage, :staging
 set :branch, :development
 
-set :server_name, 'application.stage'
-set :server_name_http, 'http.application.stage'
-set :server_port, 80
-set :server_port_ssl, 443
+set :server_port, 3000
+set :server_port_ssl, 3443
 
 set :full_app_name, "#{fetch(:application)}_#{fetch(:stage)}"
 
 # Don't forget to put your server ip
-server '192.168.33.11', user: fetch(:deploy_user).to_s, roles: %w[web app db], primary: true
-server '192.168.33.12', user: fetch(:deploy_user).to_s, roles: %w[web app], primary: true
-server '192.168.33.13', user: fetch(:deploy_user).to_s, roles: %w[web app], primary: true
+server '192.168.33.10', user: fetch(:deploy_user).to_s, roles: %w(app db), primary: true
+server '192.168.33.11', user: fetch(:deploy_user).to_s, roles: %w(app), primary: true
+server '192.168.33.12', user: fetch(:deploy_user).to_s, roles: %w(app), primary: true
 
-set :deploy_to, "#{fetch(:deploy_path)}/#{fetch(:full_app_name)}"
+set :server_names, {
+  '192.168.33.10': '192.168.33.10 application0.stage',
+  '192.168.33.11': '192.168.33.11 application1.stage',
+  '192.168.33.12': '192.168.33.12 application2.stage',
+}
+
+set :deploy_to, "/home/#{fetch(:deploy_user)}/apps/#{fetch(:full_app_name)}"
 
 set :rails_env, :staging
 
@@ -29,14 +33,15 @@ set :puma_error_log, "#{shared_path}/log/puma_error.log"
 set :puma_role, :app
 set :puma_env, :staging
 set :puma_threads, [1, 4]
-set :puma_workers, 8
+set :puma_workers, 4
 set :puma_worker_timeout, nil
 set :puma_init_active_record, false
 set :puma_preload_app, true
 set :puma_plugins, [:tmp_restart]
 set :nginx_disable_http, false
-set :nginx_http_limit_url, []
-set :nginx_use_ssl, false
-set :nginx_https_limit_url, []
-set :nginx_certificate_path, "#{shared_path}/certificates/#{fetch(:stage)}.crt"
-set :nginx_key_path, "#{shared_path}/certificates/#{fetch(:stage)}.key"
+set :nginx_http_limit_url, %w(/http/allowed/url)
+set :allow_asset, true
+set :nginx_use_ssl, true
+set :nginx_https_limit_url, %w()
+set :nginx_certificate_path, "#{shared_path}/certificates/staging.crt"
+set :nginx_key_path, "#{shared_path}/certificates/staging.key"

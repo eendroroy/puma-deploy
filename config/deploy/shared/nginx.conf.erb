@@ -4,24 +4,28 @@ upstream puma_<%= fetch(:stage) %> {
 
 <% unless fetch(:nginx_disable_http) %>
 server {
-  server_name <%= fetch(:server_name_http) %>;
+  server_name <%= fetch(:server_names)[host.hostname.to_sym] || host.hostname %>;
   listen <%= fetch(:server_port) %>;
 
-  <% if fetch(:nginx_http_limit_url).count > 1 %>
-  location /api/v1/tokens {
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_set_header Host $http_host;
-    proxy_redirect off;
-    proxy_pass http://puma_<%= fetch(:stage) %>;
-  }
-  <% else %>
+  <% if fetch(:allow_asset) || true %>
   root <%= fetch(:deploy_to) %>/current/public;
   location ^~ /assets/ {
     gzip_static on;
     expires max;
     add_header Cache-Control public;
   }
+  <% end %>
 
+  <% if (fetch(:nginx_http_limit_url) || []).count > 0 %>
+    <% fetch(:nginx_http_limit_url).each do |uri| %>
+  location <%= uri %> {
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $http_host;
+    proxy_redirect off;
+    proxy_pass http://puma_<%= fetch(:stage) %>;
+  }
+    <% end %>
+  <% else %>
   try_files $uri/index.html $uri @puma_<%= fetch(:stage) %>;
   location @puma_<%= fetch(:stage) %> {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -39,17 +43,19 @@ server {
 
 <% if fetch(:nginx_use_ssl) %>
 server {
-  server_name <%= fetch(:server_name) %>;
+  server_name <%= fetch(:server_names)[host.hostname.to_sym] || host.hostname %>;
   listen <%= fetch(:server_port_ssl) %>;
   root <%= fetch(:deploy_to) %>/current/public;
 
-  <% if fetch(:nginx_https_limit_url).count > 1 %>
-    location /api/v1/tokens {
-      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-      proxy_set_header Host $http_host;
-      proxy_redirect off;
-      proxy_pass http://puma_<%= fetch(:stage) %>;
-    }
+  <% if (fetch(:nginx_https_limit_url) || []).count > 0 %>
+    <% fetch(:nginx_https_limit_url).each do |uri| %>
+  location <%= uri %> {
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $http_host;
+    proxy_redirect off;
+    proxy_pass http://puma_<%= fetch(:stage) %>;
+  }
+    <% end %>
   <% else %>
     location ^~ /assets/ {
       gzip_static on;
@@ -73,5 +79,5 @@ server {
   ssl on;
   ssl_certificate <%= fetch(:nginx_certificate_path) %>;
   ssl_certificate_key <%= fetch(:nginx_key_path) %>;
-}#
+}
 <% end %>
