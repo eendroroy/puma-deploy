@@ -58,7 +58,7 @@ end
       ├── tasks
       │  ├── check_revision.cap
       │  ├── compile_assets_locally.cap
-      │  ├── database.cap
+      │  ├── db.cap
       │  ├── logs.cap
       │  ├── monit.cap
       │  ├── nginx.cap
