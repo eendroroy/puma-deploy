@@ -6,10 +6,9 @@
 lock '3.10.1'
 
 set :application, 'application'
-set :repo_url, '#' # Put Git url (Ex: git@github.com:user/repo.git)
+set :repo_url, '#' # Put Git url (Ex: https://github.com/user/repo.git)
 set :deploy_user, :deployer
-set :deploy_path, "/home/#{fetch(:deploy_user)}/apps"
-# set :deploy_path, '/apps'
+set :deploy_path, '/apps'
 set :pty, true
 set :tmp_dir, "/tmp"
  

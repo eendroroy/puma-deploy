@@ -1,17 +1,21 @@
 set :stage, :production
 set :branch, :master
 
-set :server_name, 'application.prod'
-set :server_name_http, 'http.application.prod'
 set :server_port, 80
 set :server_port_ssl, 443
 
 set :full_app_name, "#{fetch(:application)}_#{fetch(:stage)}"
 
 # Don't forget to put your server ip
-server '192.168.33.11', user: fetch(:deploy_user).to_s, roles: %w[web app db], primary: true
-server '192.168.33.12', user: fetch(:deploy_user).to_s, roles: %w[web app], primary: true
-server '192.168.33.13', user: fetch(:deploy_user).to_s, roles: %w[web app], primary: true
+server '192.168.33.10', user: fetch(:deploy_user).to_s, roles: %w(app db), primary: true
+server '192.168.33.11', user: fetch(:deploy_user).to_s, roles: %w(app), primary: true
+server '192.168.33.12', user: fetch(:deploy_user).to_s, roles: %w(app), primary: true
+
+set :server_names, {
+  '192.168.33.10': '192.168.33.10 node0.prod',
+  '192.168.33.11': '192.168.33.11 node1.prod',
+  '192.168.33.12': '192.168.33.12 node2.prod',
+}
 
 set :deploy_to, "#{fetch(:deploy_path)}/#{fetch(:full_app_name)}"
 
@@ -35,8 +39,9 @@ set :puma_init_active_record, false
 set :puma_preload_app, true
 set :puma_plugins, [:tmp_restart]
 set :nginx_disable_http, false
-set :nginx_http_limit_url, []
-set :nginx_use_ssl, false
-set :nginx_https_limit_url, []
+set :nginx_http_limit_url, %w(/http/allowed/url)
+set :allow_asset, true
+set :nginx_use_ssl, true
+set :nginx_https_limit_url, %w()
 set :nginx_certificate_path, "#{shared_path}/certificates/#{fetch(:stage)}.crt"
 set :nginx_key_path, "#{shared_path}/certificates/#{fetch(:stage)}.key"

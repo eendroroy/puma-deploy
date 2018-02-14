@@ -12,12 +12,12 @@ server '192.168.33.11', user: fetch(:deploy_user).to_s, roles: %w(app), primary:
 server '192.168.33.12', user: fetch(:deploy_user).to_s, roles: %w(app), primary: true
 
 set :server_names, {
-  '192.168.33.10': '192.168.33.10 application0.stage',
-  '192.168.33.11': '192.168.33.11 application1.stage',
-  '192.168.33.12': '192.168.33.12 application2.stage',
+  '192.168.33.10': '192.168.33.10 node0.stage',
+  '192.168.33.11': '192.168.33.11 node1.stage',
+  '192.168.33.12': '192.168.33.12 node2.stage',
 }
 
-set :deploy_to, "/home/#{fetch(:deploy_user)}/apps/#{fetch(:full_app_name)}"
+set :deploy_to, "#{fetch(:deploy_path)}/#{fetch(:full_app_name)}"
 
 set :rails_env, :staging
 
