@@ -1,0 +1,9 @@
+namespace :iptables do
+  desc 'iptables flush'
+  task :flush do
+    on roles(:app), in: :sequence, wait: 5 do
+      sudo 'iptables -F'
+      sudo 'iptables -X'
+    end
+  end
+end
