@@ -2,7 +2,6 @@ namespace :deploy do
   task :setup_config do
     on roles(:app) do
       if test("[ -f #{shared_path}/config/log_rotation ]")
-        puts 'updating logrotate config file permission ...'
         sudo "rm #{shared_path}/config/log_rotation"
       end
 
@@ -35,7 +34,6 @@ namespace :deploy do
       end
 
       if test("[ -f /etc/logrotate.d/#{fetch(:application)}_#{fetch(:stage)} ]")
-        puts 'Updating logrotate config file permission ...'
         sudo "chown root:root /etc/logrotate.d/#{fetch(:application)}_#{fetch(:stage)}"
       end
     end
