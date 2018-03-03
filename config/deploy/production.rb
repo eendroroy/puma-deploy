@@ -12,9 +12,9 @@ server '192.168.33.11', user: fetch(:deploy_user).to_s, roles: %w(app), primary:
 server '192.168.33.12', user: fetch(:deploy_user).to_s, roles: %w(app), primary: true
 
 set :server_names, {
-  '192.168.33.10': '192.168.33.10 node0.prod',
-  '192.168.33.11': '192.168.33.11 node1.prod',
-  '192.168.33.12': '192.168.33.12 node2.prod',
+  '192.168.33.10': { http: '192.168.33.10 node0.prod', https: '192.168.33.10 node0.prod' },
+  '192.168.33.11': { http: '192.168.33.11 node1.prod', https: '192.168.33.11 node1.prod' },
+  '192.168.33.12': { http: '192.168.33.12 node2.prod', https: '192.168.33.12 node2.prod' },
 }
 
 set :deploy_to, "#{fetch(:deploy_path)}/#{fetch(:full_app_name)}"
