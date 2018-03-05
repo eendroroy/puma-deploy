@@ -21,7 +21,7 @@ Rails-5 application deploy configuration using puma and nginx.
 Requires following gems.
 
 ```
-gem 'puma', '~> 3.10'
+gem 'puma', '= 3.10.0'
 group :development do
   gem 'capistrano'
   gem 'capistrano-bundler'

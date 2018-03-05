@@ -1,4 +1,4 @@
-gem 'puma', '~> 3.10'
+gem 'puma', '= 3.10.0'
 group :development do
   gem 'capistrano'
   gem 'capistrano-bundler'
@@ -6,4 +6,3 @@ group :development do
   gem 'capistrano-rails-console'
   gem 'capistrano-rbenv'
 end
-
