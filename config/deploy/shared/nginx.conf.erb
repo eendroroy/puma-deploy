@@ -1,5 +1,5 @@
 upstream puma_<%= fetch(:stage) %> {
-  server <%= fetch(:puma_bind) %> fail_timeout=0;
+  server <%= fetch(:puma_bind) %> fail_timeout=15s;
 }
 
 <% unless fetch(:nginx_disable_http) %>
@@ -7,12 +7,17 @@ server {
   server_name <%= fetch(:server_names).dig(host.hostname.to_sym, :http) || host.hostname %>;
   listen <%= fetch(:server_port) %>;
 
+  set_real_ip_from <%= fetch(:real_ip_from) %>;
+  real_ip_header proxy_protocol;
+
   <% if fetch(:allow_asset) || true %>
   root <%= fetch(:deploy_to) %>/current/public;
   location ^~ /assets/ {
     gzip_static on;
     expires max;
     add_header Cache-Control public;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_pass_request_headers on;
   }
   <% end %>
 
@@ -22,6 +27,8 @@ server {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $http_host;
     proxy_redirect off;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_pass_request_headers on;
     proxy_pass http://puma_<%= fetch(:stage) %>;
   }
     <% end %>
@@ -31,13 +38,15 @@ server {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $http_host;
     proxy_redirect off;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_pass_request_headers on;
     proxy_pass http://puma_<%= fetch(:stage) %>;
   }
   <% end %>
 
   error_page 500 502 503 504 /500.html;
   client_max_body_size 4G;
-  keepalive_timeout 10;
+  keepalive_timeout 60s;
 }
 <% end %>
 
@@ -47,35 +56,47 @@ server {
   listen <%= fetch(:server_port_ssl) %>;
   root <%= fetch(:deploy_to) %>/current/public;
 
+  set_real_ip_from <%= fetch(:real_ip_from) %>;
+  real_ip_header proxy_protocol;
+
+  <% if fetch(:allow_asset) || true %>
+  root <%= fetch(:deploy_to) %>/current/public;
+  location ^~ /assets/ {
+    gzip_static on;
+    expires max;
+    add_header Cache-Control public;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_pass_request_headers on;
+  }
+  <% end %>
+
   <% if (fetch(:nginx_https_limit_url) || []).count > 0 %>
     <% fetch(:nginx_https_limit_url).each do |uri| %>
   location <%= uri %> {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $http_host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_pass_request_headers on;
     proxy_redirect off;
     proxy_pass http://puma_<%= fetch(:stage) %>;
   }
     <% end %>
   <% else %>
-    location ^~ /assets/ {
-      gzip_static on;
-      expires max;
-      add_header Cache-Control public;
-    }
+  try_files $uri/index.html $uri @puma_<%= fetch(:stage) %>;
+  location @puma_<%= fetch(:stage) %> {
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $http_host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_pass_request_headers on;
+    proxy_redirect off;
+    proxy_pass http://puma_<%= fetch(:stage) %>;
+  }
 
-    try_files $uri/index.html $uri @puma_<%= fetch(:stage) %>;
-    location @puma_<%= fetch(:stage) %> {
-      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-      proxy_set_header   X-Forwarded-Proto https;
-      proxy_set_header Host $http_host;
-      proxy_redirect off;
-      proxy_pass http://puma_<%= fetch(:stage) %>;
-    }
   <% end %>
 
   error_page 500 502 503 504 /500.html;
   client_max_body_size 4G;
-  keepalive_timeout 10;
+  keepalive_timeout 60s;
   ssl on;
   ssl_certificate <%= fetch(:nginx_certificate_path) %>;
   ssl_certificate_key <%= fetch(:nginx_key_path) %>;
