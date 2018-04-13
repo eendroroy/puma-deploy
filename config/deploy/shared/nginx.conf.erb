@@ -96,7 +96,7 @@ server {
   client_max_body_size 4G;
   keepalive_timeout 60s;
   ssl on;
-  ssl_certificate <%= fetch(:nginx_certificate_path) %>;
-  ssl_certificate_key <%= fetch(:nginx_key_path) %>;
+  ssl_certificate <%= fetch(:nginx_certificate_path) || fetch(:nginx_certificate_paths).dig(host.hostname.to_sym) %>;
+  ssl_certificate_key <%= fetch(:nginx_key_path) || fetch(:nginx_key_paths).dig(host.hostname.to_sym) %>;
 }
 <% end %>
