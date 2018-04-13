@@ -1,4 +1,4 @@
-namespace :remote do
+namespace :puma do
   desc 'Commands for puma application'
   %w(start stop force-stop restart upgrade reopen-logs).each do |command|
     task command.to_sym do
