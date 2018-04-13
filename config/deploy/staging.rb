@@ -43,5 +43,5 @@ set :nginx_http_limit_url, %w()
 set :allow_asset, true
 set :nginx_use_ssl, true
 set :nginx_https_limit_url, %w()
-set :nginx_certificate_path, "#{shared_path}/certificates/staging.crt"
-set :nginx_key_path, "#{shared_path}/certificates/staging.key"
+set :nginx_certificate_path, "#{shared_path}/certificates/#{fetch(:stage)}.crt"
+set :nginx_key_path, "#{shared_path}/certificates/#{fetch(:stage)}.key"
