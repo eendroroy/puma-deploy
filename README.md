@@ -33,7 +33,7 @@ end
 
 ### Installing
 
-- Copy following files in your application root maintaining the structure:
+- **Copy following files in your application root maintaining the structure:**
 
 ```
 .
@@ -67,7 +67,7 @@ end
       └── template.rb
 ```
 
-- Put rails project's git url under :repo_url in 'config/deploy.rb' file.
+- **Put rails project's git url under :repo_url in 'config/deploy.rb' file.**
 
   Example:
   ```ruby
@@ -75,7 +75,7 @@ end
   set :repo_url, 'git@github.com:user/repo.git'
   ```
 
-- Change application name under :application in 'config/deploy.rb' file.
+- **Change application name under :application in 'config/deploy.rb' file.**
   
   Example:
   ```ruby
@@ -83,7 +83,7 @@ end
   set :application, 'demo_application'
   ```
 
-- Set Ip Address in 'config/deploy/production.rb' and 'config/deploy/staging.rb' under server
+- **Define servers in 'config/deploy/production.rb' and 'config/deploy/staging.rb'**
   
   Example:
   ```ruby
@@ -92,16 +92,16 @@ end
   server '192.168.33.12', user: fetch(:deploy_user).to_s, roles: %w(app), primary: true
   ```
 
-- Set server name in 'config/deploy/production.rb' and 'config/deploy/staging.rb' under :server_names
+- **Set server name in 'config/deploy/production.rb' and 'config/deploy/staging.rb'**
   
   Example:
   
   ```ruby
   # config/deploy/production.rb
   set :server_names, {
-    '192.168.33.10': { http: '192.168.33.10 node0.stage', https: '192.168.33.10 node0.stage' },
-    '192.168.33.11': { http: '192.168.33.11 node1.stage', https: '192.168.33.11 node1.stage' },
-    '192.168.33.12': { http: '192.168.33.12 node2.stage', https: '192.168.33.12 node2.stage' },
+    '192.168.33.10': '192.168.33.10 node0.server',
+    '192.168.33.11': '192.168.33.11 node1.server',
+    '192.168.33.12': '192.168.33.12 node2.server',
   }
   ```
 
@@ -109,13 +109,13 @@ end
 
 - To upload configurations
   
-  ```
+  ```bash
   $ bundle exec cap production deploy:setup_config
   ```
 
 - To deploy  
 
-  ```
+  ```bash
   $ bundle exec cap production deploy
   ```
 
