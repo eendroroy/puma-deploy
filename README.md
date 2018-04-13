@@ -69,55 +69,79 @@ end
 
 - **Put rails project's git url under :repo_url in 'config/deploy.rb' file.**
 
-  Example:
-  ```ruby
-  #config/deploy.rb
-  set :repo_url, 'git@github.com:user/repo.git'
-  ```
+Example:
+```ruby
+#config/deploy.rb
+set :repo_url, 'git@github.com:user/repo.git'
+```
 
 - **Change application name under :application in 'config/deploy.rb' file.**
-  
-  Example:
-  ```ruby
-  #config/deploy.rb
-  set :application, 'demo_application'
-  ```
+
+Example:
+```ruby
+#config/deploy.rb
+set :application, 'demo_application'
+```
 
 - **Define servers in 'config/deploy/production.rb' and 'config/deploy/staging.rb'**
-  
-  Example:
-  ```ruby
-  server '192.168.33.10', user: fetch(:deploy_user).to_s, roles: %w(app db), primary: true
-  server '192.168.33.11', user: fetch(:deploy_user).to_s, roles: %w(app), primary: true
-  server '192.168.33.12', user: fetch(:deploy_user).to_s, roles: %w(app), primary: true
-  ```
+
+Example:
+```ruby
+server '192.168.33.10', user: fetch(:deploy_user).to_s, roles: %w(app db), primary: true
+server '192.168.33.11', user: fetch(:deploy_user).to_s, roles: %w(app), primary: true
+server '192.168.33.12', user: fetch(:deploy_user).to_s, roles: %w(app), primary: true
+```
 
 - **Set server name in 'config/deploy/production.rb' and 'config/deploy/staging.rb'**
   
   Example:
   
-  ```ruby
-  # config/deploy/production.rb
-  set :server_names, {
-    '192.168.33.10': '192.168.33.10 node0.server',
-    '192.168.33.11': '192.168.33.11 node1.server',
-    '192.168.33.12': '192.168.33.12 node2.server',
-  }
-  ```
+```ruby
+# config/deploy/production.rb
+set :server_names, {
+  '192.168.33.10': '192.168.33.10 node0.server',
+  '192.168.33.11': '192.168.33.11 node1.server',
+  '192.168.33.12': '192.168.33.12 node2.server',
+}
+```
+
+- **Set certificate and key path in 'config/deploy/production.rb' and 'config/deploy/staging.rb'g**
+
+```ruby
+set :nginx_certificate_path, "#{shared_path}/certificates/#{fetch(:stage)}.crt"
+set :nginx_key_path, "#{shared_path}/certificates/#{fetch(:stage)}.key"
+```
+
+_For different certificate and key name in different server_
+
+```ruby
+set :nginx_certificate_paths, {
+  '192.168.33.10': "/etc/certificates/192_168_33_10.crt",
+  '192.168.33.11': "/etc/certificates/192_168_33_11.crt",
+  '192.168.33.12': "/etc/certificates/192_168_33_12.crt",
+}
+set :nginx_key_paths, {
+  '192.168.33.10': "/etc/certificates/192_168_33_10.key",
+  '192.168.33.11': "/etc/certificates/192_168_33_11.key",
+  '192.168.33.12': "/etc/certificates/192_168_33_12.key",
+}
+```
+
+_Note: configuration key name changes from `*_path` to `*_paths`_
 
 ## Usage
 
-- To upload configurations
+- **Upload configurations**
   
-  ```bash
-  $ bundle exec cap production deploy:setup_config
-  ```
+```bash
+$ bundle exec cap production deploy:setup_config
+```
 
-- To deploy  
+- **Deploy**
 
-  ```bash
-  $ bundle exec cap production deploy
-  ```
+```bash
+$ bundle exec cap production deploy
+```
 
 ## Contributing
 
