@@ -17,8 +17,6 @@ set :server_names, {
   '192.168.33.12': { http: '192.168.33.12 node2.stage', https: '192.168.33.12 node2.stage' },
 }
 
-set :real_ip_from, '192.168.33.0/24'
-
 set :deploy_to, "#{fetch(:deploy_path)}/#{fetch(:full_app_name)}"
 
 set :rails_env, :staging
