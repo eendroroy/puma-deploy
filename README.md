@@ -48,7 +48,6 @@ end
 │  │  │  ├── puma.rb.erb
 │  │  │  ├── puma_init.sh.erb
 │  │  │  ├── secrets.yml.template.erb
-│  │  │  └── sunspot.yml.template.erb
 │  │  ├── production.rb
 │  │  └── staging.rb
 │  └── deploy.rb
@@ -62,7 +61,7 @@ end
       │  ├── logs.cap
       │  ├── monit.cap
       │  ├── nginx.cap
-      │  ├── remote.cap
+      │  ├── puma.cap
       │  ├── run_tests.cap
       │  └── setup_config.cap
       └── template.rb
@@ -71,37 +70,39 @@ end
 - Put rails project's git url under :repo_url in 'config/deploy.rb' file.
 
   Example:
-  ```
+  ```ruby
   #config/deploy.rb
   set :repo_url, 'git@github.com:user/repo.git'
-  
   ```
+
 - Change application name under :application in 'config/deploy.rb' file.
   
   Example:
-  ```
+  ```ruby
   #config/deploy.rb
   set :application, 'demo_application'
   ```
-  
-- Set server name in 'config/deploy/production.rb' and 'config/deploy/staging.rb' under :server_name
-  
-  Example:
-  
-  ```
-  # config/deploy/production.rb
-  set :server_name, 'example.prod'
-  ```
-  ```
-  # config/deploy/staging.rb
-  set :server_name, 'example.stage'
-  ```
-  
+
 - Set Ip Address in 'config/deploy/production.rb' and 'config/deploy/staging.rb' under server
   
   Example:
+  ```ruby
+  server '192.168.33.10', user: fetch(:deploy_user).to_s, roles: %w(app db), primary: true
+  server '192.168.33.11', user: fetch(:deploy_user).to_s, roles: %w(app), primary: true
+  server '192.168.33.12', user: fetch(:deploy_user).to_s, roles: %w(app), primary: true
   ```
-  server '192.168.33.10', user: ...
+
+- Set server name in 'config/deploy/production.rb' and 'config/deploy/staging.rb' under :server_names
+  
+  Example:
+  
+  ```ruby
+  # config/deploy/production.rb
+  set :server_names, {
+    '192.168.33.10': { http: '192.168.33.10 node0.stage', https: '192.168.33.10 node0.stage' },
+    '192.168.33.11': { http: '192.168.33.11 node1.stage', https: '192.168.33.11 node1.stage' },
+    '192.168.33.12': { http: '192.168.33.12 node2.stage', https: '192.168.33.12 node2.stage' },
+  }
   ```
 
 ## Usage
