@@ -4,7 +4,7 @@ upstream puma_<%= fetch(:stage) %> {
 
 <% unless fetch(:nginx_disable_http) %>
 server {
-  server_name <%= fetch(:server_names).dig(host.hostname.to_sym, :http) || host.hostname %>;
+  server_name <%= fetch(:server_names).dig(host.hostname.to_sym) || host.hostname %>;
   listen <%= fetch(:server_port) %>;
 
   real_ip_header proxy_protocol;
@@ -51,7 +51,7 @@ server {
 
 <% if fetch(:nginx_use_ssl) %>
 server {
-  server_name <%= fetch(:server_names).dig(host.hostname.to_sym, :https) || host.hostname %>;
+  server_name <%= fetch(:server_names).dig(host.hostname.to_sym) || host.hostname %>;
   listen <%= fetch(:server_port_ssl) %>;
   root <%= fetch(:deploy_to) %>/current/public;
 
