@@ -1,11 +1,10 @@
 <%= fetch(:deploy_to) %>/shared/log/*.log {
     daily
     missingok
-    rotate 52
+    rotate 30
     compress
     delaycompress
     notifempty
     sharedscripts
-    endscript
     copytruncate
 }
