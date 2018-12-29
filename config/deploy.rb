@@ -70,5 +70,6 @@ namespace :deploy do
   before 'deploy:setup_config', 'nginx:remove_default_vhost'
   after 'deploy:setup_config', 'nginx:reload'
   after 'deploy:setup_config', 'monit:restart'
+  after 'deploy:publishing', 'deploy:push_deploy_tag'
   after 'deploy:publishing', 'puma:restart'
 end
