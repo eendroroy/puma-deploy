@@ -3,7 +3,7 @@ namespace :deploy do
   task :push_deploy_tag do
     on roles(:db) do
       tag = "#{fetch(:stage)}_#{fetch(:release_timestamp)}"
-      puts `git tag #{tag} #{fetch(:current_revision)} -m "Deployed from #{fetch(:branch)}@#{fetch(:current_revision)[0..6]} by #{fetch(:local_user)}"`
+      puts `git tag #{tag} #{fetch(:current_revision)} -m "Deployed from #{fetch(:branch)}@#{fetch(:current_revision)[0..6]} by #{fetch(:local_user)} at #{Time.now.strftime("%D %I:%M:%S%p")}"`
       puts `git push origin #{tag}`
     end
   end

@@ -1,4 +1,4 @@
-gem 'puma', '= 3.10.0'
+gem 'puma'
 group :development do
   gem 'capistrano'
   gem 'capistrano-bundler'
